@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:student_management/screens/sign_up_screen.dart';
 import 'package:student_management/screens/view/add_student_screen.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:student_management/screens/view/forget_password.dart';
 import 'package:student_management/screens/view/home_screen.dart';
 import 'package:student_management/screens/view/login_screen.dart';
+import 'package:student_management/screens/view/sign_up.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -27,13 +30,13 @@ class MyApp extends StatelessWidget {
         seedColor: const Color.fromARGB(255, 124, 107, 155),
       )),
       title: 'Student Management App',
-     
       initialRoute: 'login',
       routes: {
         'add_student': (context) => const AddStudent(),
         'login': (context) => const LoginPage(),
-        'home':(context) =>const  HomeScreen()
-
+        'home': (context) => const HomeScreen(),
+        'signUp': (context) => const SignUp(),
+        'forgot': (context)=> const ForgetPassword()
       },
     );
   }
