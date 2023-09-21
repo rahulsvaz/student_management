@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:student_management/screens/view/size.dart';
+import 'package:student_management/widgets/button.dart';
+import 'package:student_management/widgets/input_decoration.dart';
 
 class AddStudent extends StatelessWidget {
   const AddStudent({super.key});
@@ -16,7 +19,7 @@ class AddStudent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(
-                  height: 60,
+                  height: 40,
                 ),
                 const Text(
                   'Enter Student Details',
@@ -35,26 +38,30 @@ class AddStudent extends StatelessWidget {
                   decoration: borderDecoration('Age'),
                 ),
                 const Height20(),
+                TextFormField(
+                  decoration: borderDecoration('Place'),
+                ),
                 const Height20(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Card(
                       elevation: 20,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
                       child: GestureDetector(
                           onTap: () {
                             Navigator.pop(context);
                           },
                           child: const ButtonOne(label: 'Save')),
                     ),
-                   Card(
-                    
+                    Card(
                       elevation: 20,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
                       child: GestureDetector(
                           onTap: () {
-                            Navigator.pop(context);
+                            Navigator.pushReplacementNamed(context, 'home');
                           },
                           child: const ButtonOne(label: 'Discard')),
                     ),
@@ -65,53 +72,6 @@ class AddStudent extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  InputDecoration borderDecoration(String label) {
-    return InputDecoration(
-      label: Text(label),
-      enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.red),
-          borderRadius: borderRadius()),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: borderRadius(),
-        borderSide: const BorderSide(color: Color.fromARGB(255, 233, 223, 223)),
-      ),
-    );
-  }
-
-  BorderRadius borderRadius() => const BorderRadius.only(
-      topLeft: Radius.circular(20), bottomRight: Radius.circular(20));
-}
-
-class ButtonOne extends StatelessWidget {
-  final String label;
-  const ButtonOne({super.key, required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
-          color: Colors.red),
-      height: 40,
-      width: 120,
-      child: Center(child: Text(label)),
-    );
-  }
-}
-
-class Height20 extends StatelessWidget {
-  const Height20({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const SizedBox(
-      height: 20,
     );
   }
 }

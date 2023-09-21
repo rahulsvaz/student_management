@@ -71,6 +71,10 @@ class HomeScreen extends StatelessWidget {
                          Padding(
                           padding: EdgeInsets.only(top: 20,left: 40),
                           child: Text('Student name',style: TextStyle(fontSize: 18,fontFamily: 'Caveat'),),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 20,left: 40),
+                          child: Text('Place',style: TextStyle(fontSize: 18,fontFamily: 'Caveat'),),
                         )
                       ],
 
