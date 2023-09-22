@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:student_management/screens/view/size.dart';
 import 'package:student_management/widgets/button.dart';
@@ -8,48 +9,96 @@ class SignUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              decoration: const BoxDecoration(),
-              padding: const EdgeInsets.all(20),
-              height: 500,
-              child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40)),
-                elevation: 50,
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextFormField(decoration: borderDecoration('Name')),
-                      const Height20(),
-                      TextFormField(decoration: borderDecoration('Email')),
-                      const Height20(),
-                      TextFormField(decoration: borderDecoration('Phone')),
-                      const Height20(),
-                      TextFormField(decoration: borderDecoration('Password')),
-                      const Height20(),
-                      GestureDetector(
-                          onTap: () {},
-                          child: const ButtonOne(label: 'Sign Up'))
-                    ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                decoration: const BoxDecoration(),
+                padding: const EdgeInsets.all(20),
+                height: 550,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(40)),
+                  elevation: 50,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextFormField(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter a valid name';
+                                }
+                                return null;
+                              },
+                              decoration: borderDecoration('Name',Icon(Icons.abc))),
+                          const Height20(),
+                          TextFormField(
+                              validator: (value) {
+                                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                                    .hasMatch(value!)) {
+                                  return 'Please enter a valid email';
+                                }
+                                return null;
+                              },
+                              decoration: borderDecoration('Email',Icon(Icons.email))),
+                          const Height20(),
+                          TextFormField(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter a phone number';
+                                }
+
+                                if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                                  return 'Please enter a valid 10-digit phone number';
+                                }
+                                return null;
+                              },
+                              decoration: borderDecoration('Phone',Icon(Icons.call))),
+                          const Height20(),
+                          TextFormField(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter a password';
+                                }
+
+                                if (value.length < 8) {
+                                  return 'Password must be at least 8 characters long';
+                                }
+                                return null;
+                              },
+                              decoration: borderDecoration('Password',Icon(Icons.password))),
+                          const Height20(),
+                          GestureDetector(
+                              onTap: () {
+                                if (formKey.currentState!.validate()) {
+                                  Navigator.pushReplacementNamed(
+                                      context, 'login');
+                                }
+                              },
+                              child: const ButtonOne(label: 'Sign Up'))
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-            IconButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, 'login');
-                },
-                icon: const Icon(
-                  Icons.arrow_back,
-                ))
-          ],
+              IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(
+                    Icons.arrow_back,
+                  ))
+            ],
+          ),
         ),
       ),
     );

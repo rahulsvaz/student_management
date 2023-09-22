@@ -15,7 +15,7 @@ class ButtonOne extends StatelessWidget {
           color: Colors.black),
       height: 40,
       width: 120,
-      child: Center(child: Text(label,style: TextStyle(color: Colors.white),)),
+      child: Center(child: Text(label,style: const TextStyle(color: Colors.white),)),
     );
   }
 }

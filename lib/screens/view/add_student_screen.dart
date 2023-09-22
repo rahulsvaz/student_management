@@ -9,12 +9,17 @@ class AddStudent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
+    final formKey = GlobalKey<FormState>();
+    TextEditingController nameController = TextEditingController();
+    TextEditingController rollNumberController = TextEditingController();
+    TextEditingController ageController = TextEditingController();
+    TextEditingController placeController = TextEditingController();
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Form(
+            key: formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -26,21 +31,53 @@ class AddStudent extends StatelessWidget {
                   'Enter Student Details',
                   style: TextStyle(fontSize: 30, fontFamily: 'Caveat'),
                 ),
-                Lottie.asset('assets/animation/student.json'),
+                SizedBox(
+                    height: 250,
+                    child: Lottie.asset('assets/animation/student.json')),
                 TextFormField(
-                  decoration: borderDecoration('Name'),
+                  controller: nameController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please Enter a valid name';
+                    }
+                    return null;
+                  },
+                  decoration: borderDecoration('Name',Icon(Icons.abc)),
                 ),
                 const Height20(),
                 TextFormField(
-                  decoration: borderDecoration('Roll Number'),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a valid batch';
+                    }
+                    return null;
+                  },
+                  controller: rollNumberController,
+                  decoration: borderDecoration('Batch',Icon(Icons.format_list_numbered)),
                 ),
                 const Height20(),
                 TextFormField(
-                  decoration: borderDecoration('Age'),
+                  keyboardType: TextInputType.number,
+                  controller: ageController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter correct age';
+                    }
+                    return null;
+                  },
+                  decoration: borderDecoration('Age',Icon(Icons.onetwothree_rounded)),
                 ),
                 const Height20(),
                 TextFormField(
-                  decoration: borderDecoration('Place'),
+                  controller: placeController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter correct details';
+                    }
+                    return null;
+                  },
+                  decoration: borderDecoration('Place',Icon(Icons.place)),
                 ),
                 const Height20(),
                 Row(
@@ -52,7 +89,9 @@ class AddStudent extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20)),
                       child: GestureDetector(
                           onTap: () {
-                            Navigator.pop(context);
+                            if (formKey.currentState!.validate()) {
+                              Navigator.pop(context);
+                            }
                           },
                           child: const ButtonOne(label: 'Save')),
                     ),
@@ -62,7 +101,7 @@ class AddStudent extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20)),
                       child: GestureDetector(
                           onTap: () {
-                            Navigator.pushReplacementNamed(context, 'home');
+                            Navigator.pop(context);
                           },
                           child: const ButtonOne(label: 'Discard')),
                     ),

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:student_management/screens/sign_up_screen.dart';
 import 'package:student_management/screens/view/add_student_screen.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:student_management/screens/view/forget_password.dart';
 import 'package:student_management/screens/view/home_screen.dart';
@@ -24,10 +22,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+     themeAnimationCurve: Curves.bounceIn,
       theme: ThemeData(
+        
           colorScheme: ColorScheme.fromSeed(
         brightness: Brightness.light,
-        seedColor: const Color.fromARGB(255, 124, 107, 155),
+        seedColor: const Color.fromARGB(255, 65, 69, 2),
       )),
       title: 'Student Management App',
       initialRoute: 'login',
