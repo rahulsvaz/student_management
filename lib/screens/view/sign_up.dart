@@ -105,6 +105,8 @@ class SignUp extends StatelessWidget {
                                 final phone = phoneController.text.trim();
 
                                 if (formKey.currentState!.validate()) {
+
+
                                  await fireBase.createUser(email, password,name, phone,context);
                                 }
                               },

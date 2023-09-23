@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import 'package:student_management/screens/view/size.dart';
+import 'package:student_management/screens/viewModel/firebase_provider.dart';
 import 'package:student_management/widgets/button.dart';
 import 'package:student_management/widgets/input_decoration.dart';
 
@@ -15,6 +17,7 @@ class LoginPage extends StatelessWidget {
     final formKey = GlobalKey<FormState>();
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
+    final firebase = Provider.of<FireBaseProvider>(context);
 
     return Scaffold(
       body: Center(
@@ -34,6 +37,7 @@ class LoginPage extends StatelessWidget {
                     child: Column(
                       children: [
                         TextFormField(
+
                           validator: (value) {
                             if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                                 .hasMatch(value!)) {
@@ -71,18 +75,13 @@ class LoginPage extends StatelessWidget {
                     children: [
                       Center(
                         child: GestureDetector(
-                          onTap: () {
+                          onTap: () async{
                             if (formKey.currentState!.validate()) {
                               final userEmail =
                                   emailController.text.trim().toString();
                               final userPassword =
                                   passwordController.text.trim().toString();
-                              FirebaseAuth.instance
-                                  .createUserWithEmailAndPassword(
-                                      email: userEmail, password: userPassword)
-                                  .then((value) => log('user created'));
-
-                              Navigator.pushReplacementNamed(context, 'home');
+                              await firebase.loginUser(userEmail, userPassword, context);
                             }
                           },
                           child: const ButtonOne(label: 'Login'),
