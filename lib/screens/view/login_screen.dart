@@ -12,7 +12,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
 
@@ -22,7 +22,7 @@ class LoginPage extends StatelessWidget {
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
             child: Form(
-              key: _formKey,
+              key: formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -42,8 +42,8 @@ class LoginPage extends StatelessWidget {
                             return null;
                           },
                           controller: emailController,
-                          decoration:
-                              borderDecoration('Email', Icon(Icons.email)),
+                          decoration: borderDecoration(
+                              'Email', const Icon(Icons.email)),
                         ),
                         const Height20(),
                         TextFormField(
@@ -72,7 +72,7 @@ class LoginPage extends StatelessWidget {
                       Center(
                         child: GestureDetector(
                           onTap: () {
-                            if (_formKey.currentState!.validate()) {
+                            if (formKey.currentState!.validate()) {
                               final userEmail =
                                   emailController.text.trim().toString();
                               final userPassword =
@@ -128,7 +128,7 @@ class LoginPage extends StatelessWidget {
                           fontFamily: 'Caveat',
                           color: Colors.red),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

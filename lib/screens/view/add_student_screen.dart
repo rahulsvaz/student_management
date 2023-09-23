@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+
 import 'package:student_management/screens/view/size.dart';
+
 import 'package:student_management/widgets/button.dart';
 import 'package:student_management/widgets/input_decoration.dart';
 
@@ -9,6 +11,7 @@ class AddStudent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   
     final formKey = GlobalKey<FormState>();
     TextEditingController nameController = TextEditingController();
     TextEditingController rollNumberController = TextEditingController();
@@ -42,7 +45,7 @@ class AddStudent extends StatelessWidget {
                     }
                     return null;
                   },
-                  decoration: borderDecoration('Name',Icon(Icons.abc)),
+                  decoration: borderDecoration('Name', const Icon(Icons.abc)),
                 ),
                 const Height20(),
                 TextFormField(
@@ -54,7 +57,8 @@ class AddStudent extends StatelessWidget {
                     return null;
                   },
                   controller: rollNumberController,
-                  decoration: borderDecoration('Batch',Icon(Icons.format_list_numbered)),
+                  decoration: borderDecoration(
+                      'Batch', const Icon(Icons.format_list_numbered)),
                 ),
                 const Height20(),
                 TextFormField(
@@ -66,7 +70,8 @@ class AddStudent extends StatelessWidget {
                     }
                     return null;
                   },
-                  decoration: borderDecoration('Age',Icon(Icons.onetwothree_rounded)),
+                  decoration: borderDecoration(
+                      'Age', const Icon(Icons.onetwothree_rounded)),
                 ),
                 const Height20(),
                 TextFormField(
@@ -77,7 +82,8 @@ class AddStudent extends StatelessWidget {
                     }
                     return null;
                   },
-                  decoration: borderDecoration('Place',Icon(Icons.place)),
+                  decoration:
+                      borderDecoration('Place', const Icon(Icons.place)),
                 ),
                 const Height20(),
                 Row(
@@ -101,6 +107,7 @@ class AddStudent extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20)),
                       child: GestureDetector(
                           onTap: () {
+                           
                             Navigator.pop(context);
                           },
                           child: const ButtonOne(label: 'Discard')),

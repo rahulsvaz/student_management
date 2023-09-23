@@ -24,9 +24,9 @@ class HomeScreen extends StatelessWidget {
         width: 200,
         child: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-           const Text('hii'),
-           const Height20(),
-           const Text('hello'),
+            const Text('hii'),
+            const Height20(),
+            const Text('hello'),
             IconButton(
                 onPressed: () {
                   Navigator.pushReplacementNamed(context, 'login');

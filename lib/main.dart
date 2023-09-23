@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:student_management/screens/view/add_student_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:student_management/screens/view/forget_password.dart';
 import 'package:student_management/screens/view/home_screen.dart';
 import 'package:student_management/screens/view/login_screen.dart';
 import 'package:student_management/screens/view/sign_up.dart';
+import 'package:student_management/screens/viewModel/firebase_provider.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -12,7 +14,12 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => FireBaseProvider()),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -22,9 +29,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-     themeAnimationCurve: Curves.bounceIn,
+      themeAnimationCurve: Curves.bounceIn,
       theme: ThemeData(
-        
           colorScheme: ColorScheme.fromSeed(
         brightness: Brightness.light,
         seedColor: const Color.fromARGB(255, 65, 69, 2),
@@ -36,7 +42,7 @@ class MyApp extends StatelessWidget {
         'login': (context) => const LoginPage(),
         'home': (context) => const HomeScreen(),
         'signUp': (context) => const SignUp(),
-        'forgot': (context)=> const ForgetPassword()
+        'forgot': (context) => const ForgetPassword()
       },
     );
   }

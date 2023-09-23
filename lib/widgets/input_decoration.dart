@@ -1,7 +1,7 @@
 
   import 'package:flutter/material.dart';
 
-InputDecoration borderDecoration(String label, [Icon? icon, Icon? surfix ]) {
+InputDecoration borderDecoration(String label, [Icon? icon, IconButton? surfix  ]) {
     return InputDecoration(
       
       prefixIcon:icon ,

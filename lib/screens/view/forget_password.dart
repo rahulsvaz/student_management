@@ -34,7 +34,7 @@ class ForgetPassword extends StatelessWidget {
                       }
                       return null;
                     },
-                    decoration: borderDecoration('Email',Icon(Icons.email)),
+                    decoration: borderDecoration('Email', const Icon(Icons.email)),
                   ),
                 ),
                 const Height20(),
@@ -55,6 +55,7 @@ class ForgetPassword extends StatelessWidget {
                         onTap: () {
                           //  Navigator.pushReplacementNamed(context, 'login');
                           Navigator.popAndPushNamed(context, 'login');
+                       
                         },
                         child: const ButtonOne(label: 'Back To login'))
                   ],
