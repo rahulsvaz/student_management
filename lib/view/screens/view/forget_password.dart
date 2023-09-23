@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:student_management/screens/view/size.dart';
+import 'package:provider/provider.dart';
+import 'package:student_management/validators/validators.dart';
+import 'package:student_management/widgets/size.dart';
+import 'package:student_management/viewModel/firebase_provider.dart';
 import 'package:student_management/widgets/button.dart';
 import 'package:student_management/widgets/input_decoration.dart';
 
@@ -8,6 +11,8 @@ class ForgetPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController emailController = TextEditingController();
+    final firebase = Provider.of<FireBaseProvider>(context);
     final formKey = GlobalKey<FormState>();
     return Scaffold(
       body: Center(
@@ -27,14 +32,10 @@ class ForgetPassword extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: TextFormField(
-                    validator: (value) {
-                      if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                          .hasMatch(value!)) {
-                        return 'Please enter a valid email';
-                      }
-                      return null;
-                    },
-                    decoration: borderDecoration('Email', const Icon(Icons.email)),
+                    controller: emailController,
+                    validator: emailValidator,
+                    decoration:
+                        borderDecoration('Email', const Icon(Icons.email)),
                   ),
                 ),
                 const Height20(),
@@ -44,7 +45,8 @@ class ForgetPassword extends StatelessWidget {
                     GestureDetector(
                         onTap: () {
                           if (formKey.currentState!.validate()) {
-                            Navigator.pushReplacementNamed(context, 'login');
+                            final email = emailController.text.trim();
+                            firebase.forgotPassword(email, context);
                           }
                         },
                         child: const ButtonOne(label: 'Reset Password')),
@@ -53,9 +55,7 @@ class ForgetPassword extends StatelessWidget {
                     ),
                     GestureDetector(
                         onTap: () {
-                          //  Navigator.pushReplacementNamed(context, 'login');
-                          Navigator.popAndPushNamed(context, 'login');
-                       
+                          Navigator.pushReplacementNamed(context, 'login');
                         },
                         child: const ButtonOne(label: 'Back To login'))
                   ],

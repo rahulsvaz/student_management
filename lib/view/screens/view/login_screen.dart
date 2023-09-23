@@ -1,11 +1,9 @@
-import 'dart:developer';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'package:student_management/screens/view/size.dart';
-import 'package:student_management/screens/viewModel/firebase_provider.dart';
+import 'package:student_management/validators/validators.dart';
+import 'package:student_management/widgets/size.dart';
+import 'package:student_management/viewModel/firebase_provider.dart';
 import 'package:student_management/widgets/button.dart';
 import 'package:student_management/widgets/input_decoration.dart';
 
@@ -37,30 +35,14 @@ class LoginPage extends StatelessWidget {
                     child: Column(
                       children: [
                         TextFormField(
-
-                          validator: (value) {
-                            if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                                .hasMatch(value!)) {
-                              return ' Please enter a valid email';
-                            }
-                            return null;
-                          },
+                          validator: emailValidator,
                           controller: emailController,
                           decoration: borderDecoration(
                               'Email', const Icon(Icons.email)),
                         ),
                         const Height20(),
                         TextFormField(
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a password';
-                            }
-
-                            if (value.length < 8) {
-                              return 'Password must be at least 8 characters long';
-                            }
-                            return null;
-                          },
+                          validator: passwordValidator,
                           controller: passwordController,
                           obscureText: true,
                           decoration: borderDecoration(
@@ -75,13 +57,14 @@ class LoginPage extends StatelessWidget {
                     children: [
                       Center(
                         child: GestureDetector(
-                          onTap: () async{
+                          onTap: () async {
                             if (formKey.currentState!.validate()) {
                               final userEmail =
                                   emailController.text.trim().toString();
                               final userPassword =
                                   passwordController.text.trim().toString();
-                              await firebase.loginUser(userEmail, userPassword, context);
+                              await firebase.loginUser(
+                                  userEmail, userPassword, context);
                             }
                           },
                           child: const ButtonOne(label: 'Login'),

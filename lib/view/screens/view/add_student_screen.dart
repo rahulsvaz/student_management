@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-
-import 'package:student_management/screens/view/size.dart';
-
+import 'package:student_management/validators/validators.dart';
+import 'package:student_management/widgets/size.dart';
 import 'package:student_management/widgets/button.dart';
 import 'package:student_management/widgets/input_decoration.dart';
 
@@ -11,12 +12,12 @@ class AddStudent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
     final formKey = GlobalKey<FormState>();
     TextEditingController nameController = TextEditingController();
-    TextEditingController rollNumberController = TextEditingController();
+    TextEditingController batchController = TextEditingController();
     TextEditingController ageController = TextEditingController();
     TextEditingController placeController = TextEditingController();
+    User? currentUser = FirebaseAuth.instance.currentUser;
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -39,24 +40,14 @@ class AddStudent extends StatelessWidget {
                     child: Lottie.asset('assets/animation/student.json')),
                 TextFormField(
                   controller: nameController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter a valid name';
-                    }
-                    return null;
-                  },
+                  validator: nameValidator,
                   decoration: borderDecoration('Name', const Icon(Icons.abc)),
                 ),
                 const Height20(),
                 TextFormField(
                   keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a valid batch';
-                    }
-                    return null;
-                  },
-                  controller: rollNumberController,
+                  validator: batchValidator,
+                  controller: batchController,
                   decoration: borderDecoration(
                       'Batch', const Icon(Icons.format_list_numbered)),
                 ),
@@ -64,24 +55,14 @@ class AddStudent extends StatelessWidget {
                 TextFormField(
                   keyboardType: TextInputType.number,
                   controller: ageController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter correct age';
-                    }
-                    return null;
-                  },
+                  validator: ageValidator,
                   decoration: borderDecoration(
                       'Age', const Icon(Icons.onetwothree_rounded)),
                 ),
                 const Height20(),
                 TextFormField(
                   controller: placeController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter correct details';
-                    }
-                    return null;
-                  },
+                  validator: placeValidator,
                   decoration:
                       borderDecoration('Place', const Icon(Icons.place)),
                 ),
@@ -94,9 +75,24 @@ class AddStudent extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
                       child: GestureDetector(
-                          onTap: () {
+                          onTap: () async{
                             if (formKey.currentState!.validate()) {
-                              Navigator.pop(context);
+                              String name = nameController.text.trim();
+                              String batch = batchController.text.trim();
+                              String age = ageController.text.trim();
+                              String place = placeController.text.trim();
+                              String userId = currentUser!.uid;
+
+                             await FirebaseFirestore.instance
+                                  .collection('Students')
+                                  .doc(userId)
+                                  .set({
+                                'name': name,
+                                'batch': batch,
+                                'age': age,
+                                'place': place,
+                                'userId': userId
+                              });
                             }
                           },
                           child: const ButtonOne(label: 'Save')),
@@ -107,7 +103,6 @@ class AddStudent extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20)),
                       child: GestureDetector(
                           onTap: () {
-                           
                             Navigator.pop(context);
                           },
                           child: const ButtonOne(label: 'Discard')),

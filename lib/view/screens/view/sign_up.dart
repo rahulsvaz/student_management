@@ -1,9 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:student_management/screens/view/size.dart';
-import 'package:student_management/screens/viewModel/firebase_provider.dart';
+import 'package:student_management/validators/validators.dart';
+import 'package:student_management/widgets/size.dart';
+import 'package:student_management/viewModel/firebase_provider.dart';
 import 'package:student_management/widgets/button.dart';
 import 'package:student_management/widgets/input_decoration.dart';
 
@@ -43,24 +42,13 @@ class SignUp extends StatelessWidget {
                           //name
                           TextFormField(
                               controller: nameController,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter a valid name';
-                                }
-                                return null;
-                              },
+                              validator:nameValidator,
                               decoration: borderDecoration(
                                   'Name', const Icon(Icons.abc))),
                           const Height20(),
                           //email
                           TextFormField(
-                              validator: (value) {
-                                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                                    .hasMatch(value!)) {
-                                  return 'Please enter a valid email';
-                                }
-                                return null;
-                              },
+                              validator: emailValidator,
                               controller: emailController,
                               decoration: borderDecoration(
                                   'Email', const Icon(Icons.email))),
@@ -68,32 +56,14 @@ class SignUp extends StatelessWidget {
                           // phone
                           TextFormField(
                               controller: phoneController,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter a phone number';
-                                }
-
-                                if (!RegExp(r'^\d{10}$').hasMatch(value)) {
-                                  return 'Please enter a valid 10-digit phone number';
-                                }
-                                return null;
-                              },
+                              validator: phoneValidator,
                               decoration: borderDecoration(
                                   'Phone', const Icon(Icons.call))),
                           const Height20(),
                           // password
                           TextFormField(
                               controller: passwordController,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter a password';
-                                }
-
-                                if (value.length < 8) {
-                                  return 'Password must be at least 8 characters long';
-                                }
-                                return null;
-                              },
+                              validator: passwordValidator,
                               decoration: borderDecoration(
                                   'Password', const Icon(Icons.password))),
                           const Height20(),
@@ -105,9 +75,8 @@ class SignUp extends StatelessWidget {
                                 final phone = phoneController.text.trim();
 
                                 if (formKey.currentState!.validate()) {
-
-
-                                 await fireBase.createUser(email, password,name, phone,context);
+                                  await fireBase.createUser(
+                                      email, password, name, phone, context);
                                 }
                               },
                               child: const ButtonOne(label: 'Sign Up'))
@@ -130,4 +99,5 @@ class SignUp extends StatelessWidget {
       ),
     );
   }
+
 }

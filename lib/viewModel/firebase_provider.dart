@@ -41,15 +41,23 @@ class FireBaseProvider with ChangeNotifier {
   loginUser(String email, String password, BuildContext context) async {
     try {
       final User? loggedUser = (await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password))
+              .signInWithEmailAndPassword(email: email, password: password))
           .user;
       if (loggedUser != null) {
         Navigator.pushReplacementNamed(context, 'home');
       }
     } on FirebaseAuthException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
 
+  forgotPassword(String email, BuildContext context) {
+    FirebaseAuth.instance
+        .sendPasswordResetEmail(email: email)
+        .then((value) => ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Password reset link sent successfully'))))
+        .then((value) => Navigator.pushReplacementNamed(context, 'login'));
+  }
 }
