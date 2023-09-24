@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:student_management/validators/validators.dart';
 import 'package:student_management/widgets/size.dart';
@@ -17,6 +18,7 @@ class AddStudent extends StatelessWidget {
     TextEditingController batchController = TextEditingController();
     TextEditingController ageController = TextEditingController();
     TextEditingController placeController = TextEditingController();
+    TextEditingController phoneController = TextEditingController();
     User? currentUser = FirebaseAuth.instance.currentUser;
     return Scaffold(
       body: SingleChildScrollView(
@@ -37,7 +39,13 @@ class AddStudent extends StatelessWidget {
                 ),
                 SizedBox(
                     height: 250,
-                    child: Lottie.asset('assets/animation/student.json')),
+                    child: GestureDetector(
+                        onTap: () async {
+                          ImagePicker imagePicker = ImagePicker();
+                          XFile? imageFile = await imagePicker.pickImage(
+                              source: ImageSource.gallery);
+                        },
+                        child: Lottie.asset('assets/animation/student.json'))),
                 TextFormField(
                   controller: nameController,
                   validator: nameValidator,
@@ -67,6 +75,13 @@ class AddStudent extends StatelessWidget {
                       borderDecoration('Place', const Icon(Icons.place)),
                 ),
                 const Height20(),
+                TextFormField(
+                  controller: phoneController,
+                  validator: phoneValidator,
+                  decoration: borderDecoration(
+                      'Phone', const Icon(Icons.phone_android)),
+                ),
+                const Height20(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -75,24 +90,26 @@ class AddStudent extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
                       child: GestureDetector(
-                          onTap: () async{
+                          onTap: () async {
                             if (formKey.currentState!.validate()) {
                               String name = nameController.text.trim();
                               String batch = batchController.text.trim();
                               String age = ageController.text.trim();
                               String place = placeController.text.trim();
                               String userId = currentUser!.uid;
+                              String phone = phoneController.text.trim();
 
-                             await FirebaseFirestore.instance
+                              await FirebaseFirestore.instance
                                   .collection('Students')
-                                  .doc(userId)
+                                  .doc()
                                   .set({
                                 'name': name,
                                 'batch': batch,
                                 'age': age,
                                 'place': place,
-                                'userId': userId
-                              });
+                                'userId': userId,
+                                'phone': phone
+                              }).then((value) => Navigator.pop(context));
                             }
                           },
                           child: const ButtonOne(label: 'Save')),

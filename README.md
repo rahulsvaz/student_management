@@ -1,16 +1,69 @@
-# student_management
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Card(
+                                  elevation: 20,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: const SizedBox(
+                                    height: 200,
+                                    width: 350,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              EdgeInsets.only(top: 50, left: 30),
+                                          child: SizedBox(
+                                            height: 100,
+                                            width: 100,
+                                            child: CircleAvatar(),
+                                          ),
+                                        ),
+                                        Column(
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: 20, left: 40),
+                                              child: Text(
+                                                'Student name',
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontFamily: 'Caveat'),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: 20, left: 40),
+                                              child: Text(
+                                                'Roll Number',
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontFamily: 'Caveat'),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: 20, left: 40),
+                                              child: Text(
+                                                'Student name',
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontFamily: 'Caveat'),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: 20, left: 40),
+                                              child: Text(
+                                                'Place',
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontFamily: 'Caveat'),
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );

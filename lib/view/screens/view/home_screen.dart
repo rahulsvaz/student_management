@@ -4,9 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:student_management/widgets/size.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     User? currentUer = FirebaseAuth.instance.currentUser;
@@ -45,89 +50,96 @@ class HomeScreen extends StatelessWidget {
           ]),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: Container(
-                  child: StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('Students')
-                        .where('userId', isEqualTo: currentUer!.uid)
-                        .snapshots(),
-                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasError) {
-                        return const Center(
-                          child: Text('Some error occured'),
-                        );
-                      }
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CupertinoActivityIndicator(),
-                        );
-                      }
-                      if (snapshot.data!.docs.isEmpty) {
-                        return Center(
-                          child: Text('no data found'),
-                        );
-                      }
-                      if (snapshot.data != null) {
-                        return Card(
-                          elevation: 20,
+      body: Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection('Students')
+                .where('userId', isEqualTo: currentUer!.uid)
+                .snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError) {
+                return const Center(
+                  child: Text('Some error occurred'),
+                );
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CupertinoActivityIndicator(),
+                );
+              }
+              if (snapshot.data!.docs.isEmpty) {
+                return const Center(
+                  child: Text('no data found'),
+                );
+              }
+              if (snapshot.data != null && snapshot.hasData) {
+                return ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      var name = snapshot.data!.docs[index]['name'];
+                      var batch = snapshot.data!.docs[index]['batch'];
+                      var age = snapshot.data!.docs[index]['age'];
+                      var place = snapshot.data!.docs[index]['place'];
+                      var phone = snapshot.data!.docs[index]['phone'];
+
+
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                          elevation: 5,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
-                          child: const SizedBox(
+                          child: SizedBox(
                             height: 200,
                             width: 350,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Padding(
-                                  padding: EdgeInsets.only(top: 50, left: 30),
-                                  child: SizedBox(
-                                    height: 100,
-                                    width: 100,
-                                    child: CircleAvatar(),
-                                  ),
+                                Column(
+                                  children: [
+                                    const Padding(
+                                      padding:
+                                          EdgeInsets.only(top: 40, left: 30),
+                                      child: SizedBox(
+                                        height: 100,
+                                        width: 100,
+                                        child: CircleAvatar(),
+                                      ),
+                                    ),
+                                    const Height20(),
+                                    Container(
+                                        margin: const EdgeInsets.only(
+                                          left: 30,
+                                        ),
+                                        child: Text(
+                                          name,
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ))
+                                  ],
                                 ),
                                 Column(
                                   children: [
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 20, left: 40),
-                                      child: Text(
-                                        'Student name',
-                                        style: TextStyle(
-                                            fontSize: 18, fontFamily: 'Caveat'),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 20, left: 40),
-                                      child: Text(
-                                        'Roll Number',
-                                        style: TextStyle(
-                                            fontSize: 18, fontFamily: 'Caveat'),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 20, left: 40),
-                                      child: Text(
-                                        'Student name',
-                                        style: TextStyle(
-                                            fontSize: 18, fontFamily: 'Caveat'),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 20, left: 40),
-                                      child: Text(
-                                        'Place',
-                                        style: TextStyle(
-                                            fontSize: 18, fontFamily: 'Caveat'),
+                                    Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only( top:40.0,left: 30,bottom: 20),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              'Batch : $batch',
+                                              style: const TextStyle(fontSize: 18),
+                                            ),
+                                            const Height20(),
+                                            Text(
+                                              'Phone:$phone',
+                                              style: const TextStyle(fontSize: 18),
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     )
                                   ],
@@ -135,15 +147,13 @@ class HomeScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                        );
-                      }
-                      return Container();
-                    },
-                  ),
-                )),
-          ],
-        ),
-      ),
+                        ),
+                      );
+                    });
+              }
+              return Container();
+            },
+          )),
     );
   }
 }
