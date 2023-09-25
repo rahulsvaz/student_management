@@ -12,7 +12,6 @@ import 'package:student_management/widgets/input_decoration.dart';
 class AddStudent extends StatelessWidget {
   const AddStudent({super.key});
 
-
   @override
   Widget build(
     BuildContext context,
@@ -23,29 +22,24 @@ class AddStudent extends StatelessWidget {
     TextEditingController ageController = TextEditingController();
     TextEditingController placeController = TextEditingController();
     TextEditingController phoneController = TextEditingController();
-    ImagePicker picker = ImagePicker();
-    String? imageUrl;
-
     User? currentUser = FirebaseAuth.instance.currentUser;
-    Future uploadImage() async {
+    final picker = ImagePicker();
+    var imageUrl;
+
+    Future<void> uploadImage() async {
       final pickedFile = await picker.pickImage(source: ImageSource.gallery);
       if (pickedFile != null) {
         // Upload the image to Firebase Storage
         final storageRef = FirebaseStorage.instance
             .ref()
             .child('images/${DateTime.now()}.jpg');
-        final uploadTask = storageRef.putFile(
-          File(pickedFile.path),
-        );
-        await uploadTask.whenComplete(
-          () async {
-            // Get the download URL of the uploaded image
-            imageUrl = await storageRef.getDownloadURL();
-          },
-        );
+        final uploadTask = storageRef.putFile(File(pickedFile.path));
+        await uploadTask.whenComplete(() async {
+          // Get the download URL of the uploaded image
+          imageUrl = await storageRef.getDownloadURL();
+        });
       }
     }
-
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -65,15 +59,15 @@ class AddStudent extends StatelessWidget {
                   style: TextStyle(fontSize: 30, fontFamily: 'Caveat'),
                 ),
                 SizedBox(
-                  height: 250,
-                  child: GestureDetector(
-                    onTap: () async {
-                      await uploadImage();
-                    },
-                    child: const SizedBox(
-                      height: 150,
-                      width: 150,
-                      child: CircleAvatar(
+                  height: 200,
+                  child: SizedBox(
+                    height: 150,
+                    width: 150,
+                    child: GestureDetector(
+                      onTap: () async {
+                        await uploadImage();
+                      },
+                      child: const CircleAvatar(
                         backgroundImage:
                             AssetImage('assets/images/avatar.avif'),
                       ),
@@ -135,9 +129,9 @@ class AddStudent extends StatelessWidget {
                             String place = placeController.text.trim();
                             String userId = currentUser!.uid;
                             String phone = phoneController.text.trim();
-                            var image = imageUrl;
+                            String image = imageUrl;
 
-                             await FirebaseFirestore.instance
+                            await FirebaseFirestore.instance
                                 .collection('Students')
                                 .doc()
                                 .set({

@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:student_management/Screens/home_screen.dart';
 import 'package:student_management/validators/validators.dart';
 import 'package:student_management/widgets/size.dart';
 import 'package:student_management/widgets/button.dart';
@@ -18,31 +19,28 @@ class EditStudent extends StatelessWidget {
     BuildContext context,
   ) {
     final formKey = GlobalKey<FormState>();
+
     TextEditingController nameController = TextEditingController();
     TextEditingController batchController = TextEditingController();
     TextEditingController ageController = TextEditingController();
     TextEditingController placeController = TextEditingController();
     TextEditingController phoneController = TextEditingController();
-    ImagePicker picker = ImagePicker();
-    String? imageUrl;
-
     User? currentUser = FirebaseAuth.instance.currentUser;
-    Future uploadImage() async {
+    final picker = ImagePicker();
+    var imageUrl;
+
+    Future<void> uploadImage() async {
       final pickedFile = await picker.pickImage(source: ImageSource.gallery);
       if (pickedFile != null) {
         // Upload the image to Firebase Storage
         final storageRef = FirebaseStorage.instance
             .ref()
             .child('images/${DateTime.now()}.jpg');
-        final uploadTask = storageRef.putFile(
-          File(pickedFile.path),
-        );
-        await uploadTask.whenComplete(
-          () async {
-            // Get the download URL of the uploaded image
-            imageUrl = await storageRef.getDownloadURL();
-          },
-        );
+        final uploadTask = storageRef.putFile(File(pickedFile.path));
+        await uploadTask.whenComplete(() async {
+          // Get the download URL of the uploaded image
+          imageUrl = await storageRef.getDownloadURL();
+        });
       }
     }
 
@@ -69,8 +67,12 @@ class EditStudent extends StatelessWidget {
                     onTap: () async {
                       await uploadImage();
                     },
-                    child: const SizedBox(
-                        height: 150, width: 150, child: CircleAvatar()),
+                    child: SizedBox(
+                        height: 150,
+                        width: 150,
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(arguments['image']),
+                        )),
                   ),
                 ),
                 TextFormField(
@@ -114,37 +116,37 @@ class EditStudent extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Card(
-                      elevation: 20,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: GestureDetector(
-                        onTap: () async {
-                          if (formKey.currentState!.validate()) {
-                            String name = nameController.text.trim();
-                            String batch = batchController.text.trim();
-                            String age = ageController.text.trim();
-                            String place = placeController.text.trim();
-                            String userId = currentUser!.uid;
-                            String phone = phoneController.text.trim();
+                    GestureDetector(
+                      onTap: ()async{if (formKey.currentState!.validate()) {
+                              String name = nameController.text.trim();
+                              String batch = batchController.text.trim();
+                              String age = ageController.text.trim();
+                              String place = placeController.text.trim();
+                              String userId = currentUser!.uid;
+                              String phone = phoneController.text.trim();
+                              String image = imageUrl;
+                    
+                              await FirebaseFirestore.instance
+                                  .collection('Students')
+                                  .doc(arguments['docId'])
+                                  .update({
+                                'name': name,
+                                'batch': batch,
+                                'age': age,
+                                'place': place,
+                                'userId': userId,
+                                'phone': phone,
+                                
+                              });
+                              Navigator.pop(context);
+                            }
 
-                            await FirebaseFirestore.instance
-                                .collection('Students')
-                                .doc(arguments['docId'])
-                                .update({
-                              'name': name,
-                              'batch': batch,
-                              'age': age,
-                              'place': place,
-                              'userId': userId,
-                              'phone': phone,
-                              'image': imageUrl
-                            }).then(
-                              (value) => Navigator.pop(context),
-                            );
-                          }
-                        },
+                      },
+                      child: Card(
+                        elevation: 20,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                         child: const ButtonOne(label: 'Update'),
                       ),
                     ),
