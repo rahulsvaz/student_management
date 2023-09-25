@@ -37,16 +37,18 @@ class _HomeScreenState extends State<HomeScreen> {
             const Height20(),
             const Text('hello'),
             IconButton(
-                onPressed: () {
-                  FirebaseAuth.instance.signOut().then((value) =>
-                      Navigator.pushReplacementNamed(context, 'login'));
-                },
-                icon: const Icon(Icons.logout)),
+              onPressed: () {
+                FirebaseAuth.instance.signOut().then((value) =>
+                    Navigator.pushReplacementNamed(context, 'login'));
+              },
+              icon: const Icon(Icons.logout),
+            ),
             IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, 'add_student');
-                },
-                icon: const Icon(Icons.add))
+              onPressed: () {
+                Navigator.pushNamed(context, 'add_student');
+              },
+              icon: const Icon(Icons.add),
+            )
           ]),
         ),
       ),
@@ -82,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       var age = snapshot.data!.docs[index]['age'];
                       var place = snapshot.data!.docs[index]['place'];
                       var phone = snapshot.data!.docs[index]['phone'];
-
+                      var image = snapshot.data!.docs[index]['image'];
 
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -99,14 +101,21 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 Column(
                                   children: [
-                                    const Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 40, left: 30),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 40, left: 30),
                                       child: SizedBox(
-                                        height: 100,
-                                        width: 100,
-                                        child: CircleAvatar(),
-                                      ),
+                                          height: 100,
+                                          width: 100,
+                                          child: (image == null)
+                                              ? const CircleAvatar(
+                                                  backgroundImage: AssetImage(
+                                                      "assets/images/avatar.avif"),
+                                                )
+                                              : CircleAvatar(
+                                                  backgroundImage:
+                                                      NetworkImage(image),
+                                                )),
                                     ),
                                     const Height20(),
                                     Container(
@@ -125,18 +134,43 @@ class _HomeScreenState extends State<HomeScreen> {
                                   children: [
                                     Center(
                                       child: Padding(
-                                        padding: const EdgeInsets.only( top:40.0,left: 30,bottom: 20),
+                                        padding: const EdgeInsets.only(
+                                            top: 40.0, left: 30, bottom: 20),
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               'Batch : $batch',
-                                              style: const TextStyle(fontSize: 18),
+                                              style:
+                                                  const TextStyle(fontSize: 18),
                                             ),
                                             const Height20(),
                                             Text(
                                               'Phone:$phone',
-                                              style: const TextStyle(fontSize: 18),
+                                              style:
+                                                  const TextStyle(fontSize: 18),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 38),
+                                              child: Row(
+                                                children: [
+                                                  IconButton(
+                                                      onPressed: () {
+                                                         Navigator.pushNamed(
+                                                            context, 'edit', arguments: {
+                                                              
+                                                            });
+                                                      },
+                                                      icon: const Icon(Icons.edit)),
+                                                  IconButton(
+                                                      onPressed: () {
+                                                      
+                                                      },
+                                                      icon: const Icon(Icons.delete)),
+                                                ],
+                                              ),
                                             )
                                           ],
                                         ),

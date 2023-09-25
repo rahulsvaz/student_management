@@ -25,7 +25,7 @@ class FireBaseProvider with ChangeNotifier {
               'Name': name,
               'Email': email,
               'Phone': phone,
-              'UerId': currentUser!.uid
+              'UerId': currentUser.uid
             })
             .then((value) => Navigator.pop(context))
             .then((value) => FirebaseAuth.instance.signOut());
@@ -59,5 +59,6 @@ class FireBaseProvider with ChangeNotifier {
             const SnackBar(
                 content: Text('Password reset link sent successfully'))))
         .then((value) => Navigator.pushReplacementNamed(context, 'login'));
+
   }
 }

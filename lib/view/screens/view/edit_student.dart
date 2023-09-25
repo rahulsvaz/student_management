@@ -9,8 +9,8 @@ import 'package:student_management/widgets/size.dart';
 import 'package:student_management/widgets/button.dart';
 import 'package:student_management/widgets/input_decoration.dart';
 
-class AddStudent extends StatelessWidget {
-  const AddStudent({super.key});
+class EditStudent extends StatelessWidget {
+  const EditStudent({super.key});
 
   @override
   Widget build(
@@ -59,7 +59,7 @@ class AddStudent extends StatelessWidget {
                   height: 40,
                 ),
                 const Text(
-                  'Enter Student Details',
+                  'Edit Student Details',
                   style: TextStyle(fontSize: 30, fontFamily: 'Caveat'),
                 ),
                 SizedBox(
@@ -71,7 +71,7 @@ class AddStudent extends StatelessWidget {
                     child: const SizedBox(
                       height: 150,
                       width: 150,
-                      child: CircleAvatar(
+                      child:  CircleAvatar(
                         backgroundImage:
                             AssetImage('assets/images/avatar.avif'),
                       ),
@@ -136,7 +136,7 @@ class AddStudent extends StatelessWidget {
 
                             await FirebaseFirestore.instance
                                 .collection('Students')
-                                .doc()
+                                .doc(currentUser.uid)
                                 .set({
                               'name': name,
                               'batch': batch,

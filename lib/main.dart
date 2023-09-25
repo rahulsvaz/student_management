@@ -1,9 +1,9 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_management/view/screens/view/add_student_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:student_management/view/screens/view/edit_student.dart';
 import 'package:student_management/view/screens/view/forget_password.dart';
 import 'package:student_management/view/screens/view/home_screen.dart';
 import 'package:student_management/view/screens/view/login_screen.dart';
@@ -19,7 +19,6 @@ void main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => FireBaseProvider()),
-  
     ],
     child: const MyApp(),
   ));
@@ -39,6 +38,7 @@ class _MyAppState extends State<MyApp> {
     user = FirebaseAuth.instance.currentUser;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -56,7 +56,10 @@ class _MyAppState extends State<MyApp> {
         'login': (context) => const LoginPage(),
         'home': (context) => const HomeScreen(),
         'signUp': (context) => const SignUp(),
-        'forgot': (context) => const ForgetPassword()
+        'forgot': (context) => const ForgetPassword(),
+        'edit':(context) => const EditStudent()
+    
+        
       },
     );
   }
