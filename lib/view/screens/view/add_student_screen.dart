@@ -12,6 +12,7 @@ import 'package:student_management/widgets/input_decoration.dart';
 class AddStudent extends StatelessWidget {
   const AddStudent({super.key});
 
+
   @override
   Widget build(
     BuildContext context,
@@ -44,6 +45,7 @@ class AddStudent extends StatelessWidget {
         );
       }
     }
+
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -133,8 +135,9 @@ class AddStudent extends StatelessWidget {
                             String place = placeController.text.trim();
                             String userId = currentUser!.uid;
                             String phone = phoneController.text.trim();
+                            var image = imageUrl;
 
-                            await FirebaseFirestore.instance
+                             await FirebaseFirestore.instance
                                 .collection('Students')
                                 .doc()
                                 .set({
@@ -144,7 +147,7 @@ class AddStudent extends StatelessWidget {
                               'place': place,
                               'userId': userId,
                               'phone': phone,
-                              'image': imageUrl
+                              'image': image
                             }).then(
                               (value) => Navigator.pop(context),
                             );

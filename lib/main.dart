@@ -57,7 +57,7 @@ class _MyAppState extends State<MyApp> {
         'home': (context) => const HomeScreen(),
         'signUp': (context) => const SignUp(),
         'forgot': (context) => const ForgetPassword(),
-        'edit':(context) => const EditStudent()
+        //'edit':(context) =>  const EditStudent(arguments:{},)
     
         
       },

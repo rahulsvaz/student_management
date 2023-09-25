@@ -10,7 +10,8 @@ import 'package:student_management/widgets/button.dart';
 import 'package:student_management/widgets/input_decoration.dart';
 
 class EditStudent extends StatelessWidget {
-  const EditStudent({super.key});
+  final Map arguments;
+  const EditStudent({super.key, required this.arguments});
 
   @override
   Widget build(
@@ -58,9 +59,9 @@ class EditStudent extends StatelessWidget {
                 const SizedBox(
                   height: 40,
                 ),
-                const Text(
-                  'Edit Student Details',
-                  style: TextStyle(fontSize: 30, fontFamily: 'Caveat'),
+                Text(
+                  arguments['name'].toString(),
+                  style: const TextStyle(fontSize: 30, fontFamily: 'Caveat'),
                 ),
                 SizedBox(
                   height: 250,
@@ -69,17 +70,11 @@ class EditStudent extends StatelessWidget {
                       await uploadImage();
                     },
                     child: const SizedBox(
-                      height: 150,
-                      width: 150,
-                      child:  CircleAvatar(
-                        backgroundImage:
-                            AssetImage('assets/images/avatar.avif'),
-                      ),
-                    ),
+                        height: 150, width: 150, child: CircleAvatar()),
                   ),
                 ),
                 TextFormField(
-                  controller: nameController,
+                  controller: nameController..text = arguments['name'],
                   validator: nameValidator,
                   decoration: borderDecoration('Name', const Icon(Icons.abc)),
                 ),
@@ -87,7 +82,7 @@ class EditStudent extends StatelessWidget {
                 TextFormField(
                   keyboardType: TextInputType.number,
                   validator: batchValidator,
-                  controller: batchController,
+                  controller: batchController..text = arguments['batch'],
                   decoration: borderDecoration(
                     'Batch',
                     const Icon(Icons.format_list_numbered),
@@ -96,21 +91,21 @@ class EditStudent extends StatelessWidget {
                 const Height20(),
                 TextFormField(
                   keyboardType: TextInputType.number,
-                  controller: ageController,
+                  controller: ageController..text = arguments['age'],
                   validator: ageValidator,
                   decoration: borderDecoration(
                       'Age', const Icon(Icons.onetwothree_rounded)),
                 ),
                 const Height20(),
                 TextFormField(
-                  controller: placeController,
+                  controller: placeController..text = arguments['place'],
                   validator: placeValidator,
                   decoration:
                       borderDecoration('Place', const Icon(Icons.place)),
                 ),
                 const Height20(),
                 TextFormField(
-                  controller: phoneController,
+                  controller: phoneController..text = arguments['phone'],
                   validator: phoneValidator,
                   decoration: borderDecoration(
                       'Phone', const Icon(Icons.phone_android)),
@@ -136,8 +131,8 @@ class EditStudent extends StatelessWidget {
 
                             await FirebaseFirestore.instance
                                 .collection('Students')
-                                .doc(currentUser.uid)
-                                .set({
+                                .doc(arguments['docId'])
+                                .update({
                               'name': name,
                               'batch': batch,
                               'age': age,
@@ -150,7 +145,7 @@ class EditStudent extends StatelessWidget {
                             );
                           }
                         },
-                        child: const ButtonOne(label: 'Save'),
+                        child: const ButtonOne(label: 'Update'),
                       ),
                     ),
                     Card(
