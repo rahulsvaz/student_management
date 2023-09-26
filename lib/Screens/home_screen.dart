@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:student_management/Screens/add_student_screen.dart';
 import 'package:student_management/Screens/edit_student.dart';
 import 'package:student_management/widgets/size.dart';
 
@@ -30,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _signOut() async {
     await _auth.signOut();
-    Navigator.pop(context, 'login');
+    Navigator.pushReplacementNamed(context, 'login');
   }
 
   @override
@@ -143,9 +142,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       'name': name,
                                       'phone': phone,
                                       'age': age,
-                                      'place':place,
-                                      'image':image,
-                                      'batch':batch
+                                      'place': place,
+                                      'image': image,
+                                      'batch': batch
                                     },
                                   ),
                                 ),

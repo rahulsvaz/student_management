@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,21 +8,26 @@ import 'package:student_management/Screens/forget_password.dart';
 import 'package:student_management/Screens/home_screen.dart';
 import 'package:student_management/Screens/login_screen.dart';
 import 'package:student_management/Screens/sign_up.dart';
+import 'package:student_management/firebase/firebase_api.dart';
 import 'package:student_management/viewModel/firebase_provider.dart';
 import 'firebase/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  try {
-    await Firebase.initializeApp(
+   await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-  } catch (e) {
-    
-    log('Firebase initialization error: $e');
-  }
-  
+     await FirebaseApi().initNotification();
+
+  // try {
+  //   await Firebase.initializeApp(
+  //     options: DefaultFirebaseOptions.currentPlatform,
+  //   );
+  //      await FirebaseApi().initNotification();
+  // } catch (e) {
+  //   log('Firebase initialization error: $e');
+  // }
+
   runApp(
     MultiProvider(
       providers: [
@@ -40,7 +44,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
-    
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
