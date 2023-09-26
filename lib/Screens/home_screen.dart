@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:student_management/Screens/edit_student.dart';
 import 'package:student_management/widgets/size.dart';
 
@@ -117,7 +118,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               await _firestore
                                   .collection('Students')
                                   .doc(docId)
-                                  .delete();
+                                  .delete()
+                                  .then((value) => Fluttertoast.showToast(
+                                      msg: 'Student data deleted'));
                             },
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(20)),

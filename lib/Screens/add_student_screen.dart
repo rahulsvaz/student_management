@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:student_management/validators/validators.dart';
 import 'package:student_management/widgets/size.dart';
@@ -143,7 +144,7 @@ class AddStudent extends StatelessWidget {
                               'phone': phone,
                               'image': image
                             }).then(
-                              (value) => Navigator.pop(context),
+                              (value) => Fluttertoast.showToast(msg: 'Details for $name added!').then((value) => Navigator.pop(context))
                             );
                           }
                         },

@@ -19,15 +19,6 @@ void main() async {
     );
      await FirebaseApi().initNotification();
 
-  // try {
-  //   await Firebase.initializeApp(
-  //     options: DefaultFirebaseOptions.currentPlatform,
-  //   );
-  //      await FirebaseApi().initNotification();
-  // } catch (e) {
-  //   log('Firebase initialization error: $e');
-  // }
-
   runApp(
     MultiProvider(
       providers: [
