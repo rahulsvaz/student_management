@@ -10,6 +10,7 @@ import 'package:student_management/Screens/login_screen.dart';
 import 'package:student_management/Screens/sign_up.dart';
 import 'package:student_management/firebase/firebase_api.dart';
 import 'package:student_management/viewModel/firebase_provider.dart';
+import 'package:student_management/widgets/upload_image.dart';
 import 'firebase/firebase_options.dart';
 final GlobalKey<NavigatorState>  navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
@@ -23,6 +24,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => FireBaseProvider()),
+        ChangeNotifierProvider(create:  (context)=> ImageProvide())
       ],
       child: const MyApp(),
     ),

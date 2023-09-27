@@ -1,7 +1,5 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:student_management/validators/validators.dart';
 import 'package:student_management/viewModel/firebase_provider.dart';
@@ -19,6 +17,7 @@ class AddStudent extends StatelessWidget {
   Widget build(
     BuildContext context,
   ) {
+    final imageProvider = Provider.of<ImageProvide>(context,listen: false);
     final firebase = Provider.of<FireBaseProvider>(context);
     final formKey = GlobalKey<FormState>();
     TextEditingController nameController = TextEditingController();
@@ -27,8 +26,7 @@ class AddStudent extends StatelessWidget {
     TextEditingController placeController = TextEditingController();
     TextEditingController phoneController = TextEditingController();
     User? currentUser = FirebaseAuth.instance.currentUser;
-    final ImagePicker picker = ImagePicker();
-    String? imageUrl;
+    String imageUrl = '';
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -47,15 +45,13 @@ class AddStudent extends StatelessWidget {
                   child: SizedBox(
                     height: 150,
                     width: 150,
-                    child: GestureDetector(
-                      onTap: () async {
-                        imageUrl = await uploadImage(picker);
-                      },
-                      child: const CircleAvatar(
-                        backgroundImage:
-                            AssetImage('assets/images/avatar.avif'),
-                      ),
-                    ),
+                    child: GestureDetector(onTap: () async {
+                      imageUrl = await imageProvider.uploadImage();
+                    }, child: Consumer<ImageProvide>(builder: (context, value, child) {
+                      return (imageUrl == '')
+                          ? 
+                         const CircleAvatar(backgroundImage:AssetImage('assets/images/avatar.avif'),):CircleAvatar(backgroundImage:NetworkImage(imageUrl),);
+                    })),
                   ),
                 ),
                 TextFormField(
@@ -113,7 +109,7 @@ class AddStudent extends StatelessWidget {
                             String place = controllerToString(placeController);
                             String phone = controllerToString(phoneController);
                             String userId = currentUser!.uid;
-                            String image = imageUrl!;
+                            String image = imageUrl;
                             await firebase.addStudent(
                                 name, batch, age, place, userId, phone, image);
                           }
