@@ -1,6 +1,5 @@
-import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +10,7 @@ import 'package:student_management/widgets/custom_font_text.dart';
 import 'package:student_management/widgets/size.dart';
 import 'package:student_management/widgets/button.dart';
 import 'package:student_management/widgets/input_decoration.dart';
+import 'package:student_management/widgets/upload_image.dart';
 
 class AddStudent extends StatelessWidget {
   const AddStudent({super.key});
@@ -27,23 +27,8 @@ class AddStudent extends StatelessWidget {
     TextEditingController placeController = TextEditingController();
     TextEditingController phoneController = TextEditingController();
     User? currentUser = FirebaseAuth.instance.currentUser;
-    final picker = ImagePicker();
-    var imageUrl;
-
-    Future<void> uploadImage() async {
-      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-      if (pickedFile != null) {
-        // Upload the image to Firebase Storage
-        final storageRef = FirebaseStorage.instance
-            .ref()
-            .child('images/${DateTime.now()}.jpg');
-        final uploadTask = storageRef.putFile(File(pickedFile.path));
-        await uploadTask.whenComplete(() async {
-          // Get the download URL of the uploaded image
-          imageUrl = await storageRef.getDownloadURL();
-        });
-      }
-    }
+    final ImagePicker picker = ImagePicker();
+    String? imageUrl;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -64,7 +49,7 @@ class AddStudent extends StatelessWidget {
                     width: 150,
                     child: GestureDetector(
                       onTap: () async {
-                        await uploadImage();
+                        imageUrl = await uploadImage(picker);
                       },
                       child: const CircleAvatar(
                         backgroundImage:
@@ -128,7 +113,7 @@ class AddStudent extends StatelessWidget {
                             String place = controllerToString(placeController);
                             String phone = controllerToString(phoneController);
                             String userId = currentUser!.uid;
-                            String image = imageUrl;
+                            String image = imageUrl!;
                             await firebase.addStudent(
                                 name, batch, age, place, userId, phone, image);
                           }
@@ -158,4 +143,3 @@ class AddStudent extends StatelessWidget {
     );
   }
 }
-
