@@ -50,7 +50,11 @@ class AddStudent extends StatelessWidget {
                     }, child: Consumer<ImageProvide>(builder: (context, value, child) {
                       return (imageUrl == '')
                           ? 
-                         const CircleAvatar(backgroundImage:AssetImage('assets/images/avatar.avif'),):CircleAvatar(backgroundImage:NetworkImage(imageUrl),);
+                         const CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          backgroundImage:AssetImage('assets/images/avatar.avif'),):CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            backgroundImage:NetworkImage(imageUrl),);
                     })),
                   ),
                 ),
