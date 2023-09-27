@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:student_management/validators/validators.dart';
+import 'package:student_management/widgets/controller_to_string.dart';
+import 'package:student_management/widgets/custom_font_text.dart';
 import 'package:student_management/widgets/size.dart';
 import 'package:student_management/viewModel/firebase_provider.dart';
 import 'package:student_management/widgets/button.dart';
@@ -60,9 +62,11 @@ class LoginPage extends StatelessWidget {
                           onTap: () async {
                             if (formKey.currentState!.validate()) {
                               final userEmail =
-                                  emailController.text.trim().toString();
+                                  controllerToString(emailController);
+
                               final userPassword =
-                                  passwordController.text.trim().toString();
+                                  controllerToString(passwordController);
+
                               await firebase.loginUser(
                                   userEmail, userPassword, context);
                             }
@@ -78,39 +82,27 @@ class LoginPage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        "Don't Have Account?   ",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontFamily: 'Caveat',
-                        ),
-                      ),
+                      const FontText(
+                          text: "Don't Have An Account", fontSize: 20),
                       GestureDetector(
-                        onTap: () => Navigator.pushNamed(context, 'signUp'),
-                        child: const Text(
-                          'Sign Up',
-                          style: TextStyle(
-                              fontSize: 23,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue,
-                              fontFamily: 'Caveat'),
-                        ),
-                      )
+                          onTap: () => Navigator.pushNamed(context, 'signUp'),
+                          child: FontText(
+                            text: '  Sign Up',
+                            fontSize: 23,
+                            color: Colors.blue.shade900,
+                          ))
                     ],
                   ),
                   const Height20(),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacementNamed(context, 'forgot');
-                    },
-                    child: const Text(
-                      'Forget Password',
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontFamily: 'Caveat',
-                          color: Colors.red),
-                    ),
-                  ),
+                      onTap: () {
+                        Navigator.pushReplacementNamed(context, 'forgot');
+                      },
+                      child: const FontText(
+                        text: 'Forgot Password',
+                        fontSize: 22,
+                        color: Colors.red,
+                      )),
                 ],
               ),
             ),

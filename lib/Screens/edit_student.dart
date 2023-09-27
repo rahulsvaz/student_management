@@ -116,30 +116,30 @@ class EditStudent extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     GestureDetector(
-                      onTap: ()async{if (formKey.currentState!.validate()) {
-                              String name = nameController.text.trim();
-                              String batch = batchController.text.trim();
-                              String age = ageController.text.trim();
-                              String place = placeController.text.trim();
-                              String userId = currentUser!.uid;
-                              String phone = phoneController.text.trim();
-                              String image = imageUrl;
-                    
-                              await FirebaseFirestore.instance
-                                  .collection('Students')
-                                  .doc(arguments['docId'])
-                                  .update({
-                                'name': name,
-                                'batch': batch,
-                                'age': age,
-                                'place': place,
-                                'userId': userId,
-                                'phone': phone,
-                                
-                              });
-                              Navigator.pop(context);
-                            }
+                      onTap: () async {
+                        if (formKey.currentState!.validate()) {
+                          String name = nameController.text.trim();
+                          String batch = batchController.text.trim();
+                          String age = ageController.text.trim();
+                          String place = placeController.text.trim();
+                          String userId = currentUser!.uid;
+                          String phone = phoneController.text.trim();
+                          String image = imageUrl;
 
+                          await FirebaseFirestore.instance
+                              .collection('Students')
+                              .doc(arguments['docId'])
+                              .update({
+                            'name': name,
+                            'batch': batch,
+                            'age': age,
+                            'place': place,
+                            'userId': userId,
+                            'phone': phone,
+                            'image':image
+                          }).then((value) => Navigator.pop(context));
+                          
+                        }
                       },
                       child: Card(
                         elevation: 20,

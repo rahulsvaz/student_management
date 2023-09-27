@@ -63,6 +63,22 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
+      drawer: Drawer(
+        backgroundColor: Colors.amber.shade200,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, 'location');
+                },
+                child: const Text('Get Location'),
+              ),
+            )
+          ],
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: StreamBuilder<QuerySnapshot>(
@@ -123,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       msg: 'Student data deleted'));
                             },
                             borderRadius:
-                                const BorderRadius.all(Radius.circular(20)),
+                                const BorderRadius.all(Radius.circular(30)),
                             backgroundColor: const Color(0xFFFE4A49),
                             foregroundColor: Colors.white,
                             icon: Icons.delete,
@@ -154,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               );
                             },
                             borderRadius:
-                                const BorderRadius.all(Radius.circular(20)),
+                                const BorderRadius.all(Radius.circular(30)),
                             backgroundColor: const Color(0xFF7BC043),
                             foregroundColor: Colors.white,
                             icon: Icons.archive,
@@ -164,9 +180,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       key: const ValueKey(0),
                       child: Card(
+                        color: Colors.amberAccent,
                         elevation: 5,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(30),
                         ),
                         child: SizedBox(
                           height: 200,
