@@ -40,7 +40,9 @@ class LoginPage extends StatelessWidget {
                           validator: emailValidator,
                           controller: emailController,
                           decoration: borderDecoration(
-                              'Email', const Icon(Icons.email)),
+                            'Email',
+                            const Icon(Icons.email),
+                          ),
                         ),
                         const Height20(),
                         TextFormField(
@@ -76,33 +78,33 @@ class LoginPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const Height20(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const FontText(
                           text: "Don't Have An Account", fontSize: 20),
                       GestureDetector(
-                          onTap: () => Navigator.pushNamed(context, 'signUp'),
-                          child: FontText(
-                            text: '  Sign Up',
-                            fontSize: 23,
-                            color: Colors.blue.shade900,
-                          ))
+                        onTap: () => Navigator.pushNamed(context, 'signUp'),
+                        child: FontText(
+                          text: '  Sign Up',
+                          fontSize: 23,
+                          color: Colors.blue.shade900,
+                        ),
+                      )
                     ],
                   ),
                   const Height20(),
                   GestureDetector(
-                      onTap: () {
-                        Navigator.pushReplacementNamed(context, 'forgot');
-                      },
-                      child: const FontText(
-                        text: 'Forgot Password',
-                        fontSize: 22,
-                        color: Colors.red,
-                      )),
+                    onTap: () {
+                      Navigator.pushReplacementNamed(context, 'forgot');
+                    },
+                    child: const FontText(
+                      text: 'Forgot Password',
+                      fontSize: 22,
+                      color: Colors.red,
+                    ),
+                  ),
                 ],
               ),
             ),

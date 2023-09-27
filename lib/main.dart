@@ -11,7 +11,7 @@ import 'package:student_management/Screens/sign_up.dart';
 import 'package:student_management/firebase/firebase_api.dart';
 import 'package:student_management/viewModel/firebase_provider.dart';
 import 'firebase/firebase_options.dart';
-
+final GlobalKey<NavigatorState>  navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       title: 'Student Management App',
+      navigatorKey:navigatorKey,
       initialRoute: user != null ? 'home' : 'login',
       routes: {
         'add_student': (context) => const AddStudent(),

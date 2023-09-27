@@ -1,11 +1,13 @@
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:student_management/validators/validators.dart';
+import 'package:student_management/viewModel/firebase_provider.dart';
+import 'package:student_management/widgets/controller_to_string.dart';
+import 'package:student_management/widgets/custom_font_text.dart';
 import 'package:student_management/widgets/size.dart';
 import 'package:student_management/widgets/button.dart';
 import 'package:student_management/widgets/input_decoration.dart';
@@ -17,6 +19,7 @@ class AddStudent extends StatelessWidget {
   Widget build(
     BuildContext context,
   ) {
+    final firebase = Provider.of<FireBaseProvider>(context);
     final formKey = GlobalKey<FormState>();
     TextEditingController nameController = TextEditingController();
     TextEditingController batchController = TextEditingController();
@@ -52,13 +55,8 @@ class AddStudent extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(
-                  height: 40,
-                ),
-                const Text(
-                  'Enter Student Details',
-                  style: TextStyle(fontSize: 30, fontFamily: 'Caveat'),
-                ),
+                const Height40(),
+                const FontText(text: 'Enter Student Details ', fontSize: 30),
                 SizedBox(
                   height: 200,
                   child: SizedBox(
@@ -124,28 +122,15 @@ class AddStudent extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () async {
                           if (formKey.currentState!.validate()) {
-                            String name = nameController.text.trim();
-                            String batch = batchController.text.trim();
-                            String age = ageController.text.trim();
-                            String place = placeController.text.trim();
+                            String name = controllerToString(nameController);
+                            String batch = controllerToString(batchController);
+                            String age = controllerToString(ageController);
+                            String place = controllerToString(placeController);
+                            String phone = controllerToString(phoneController);
                             String userId = currentUser!.uid;
-                            String phone = phoneController.text.trim();
                             String image = imageUrl;
-
-                            await FirebaseFirestore.instance
-                                .collection('Students')
-                                .doc()
-                                .set({
-                              'name': name,
-                              'batch': batch,
-                              'age': age,
-                              'place': place,
-                              'userId': userId,
-                              'phone': phone,
-                              'image': image
-                            }).then(
-                              (value) => Fluttertoast.showToast(msg: 'Details for $name added!').then((value) => Navigator.pop(context))
-                            );
+                            await firebase.addStudent(
+                                name, batch, age, place, userId, phone, image);
                           }
                         },
                         child: const ButtonOne(label: 'Save'),
@@ -173,3 +158,4 @@ class AddStudent extends StatelessWidget {
     );
   }
 }
+
