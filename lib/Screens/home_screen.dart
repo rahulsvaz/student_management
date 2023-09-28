@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:student_management/Screens/edit_student.dart';
+import 'package:student_management/Screens/view_student.dart';
 import 'package:student_management/widgets/custom_font_text.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -103,11 +102,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   final studentData = snapshot.data!.docs[index];
-                  final name = studentData['name'];
+                  final name = studentData['name'].toString().toUpperCase();
                   final age = studentData['age'];
-                  final place = studentData['place'];
-                  final batch = studentData['batch'];
-                  final phone = studentData['phone'];
+                  final place = studentData['place'].toString().toUpperCase();
+                  final batch = studentData['batch'].toString().toUpperCase();
+                  final phone = studentData['phone'].toString().toUpperCase();
                   final image = studentData['image'];
                   final docId = studentData.id;
 
@@ -168,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       key: const ValueKey(0),
                       child: Card(
-                        color: Colors.amberAccent,
+                        color:Colors.deepPurple.shade100,
                         elevation: 5,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
@@ -193,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       child: (image == null)
                                           ? const CircleAvatar(
                                               backgroundImage: AssetImage(
-                                                "assets/images/avatar.avif",
+                                                "assets/images/avatar.avif ",
                                               ),
                                             )
                                           : CircleAvatar(
@@ -237,7 +236,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                           GestureDetector(
                                             onTap: () {
-                                           
+                                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ViewStudent(
+                                    arguments: {
+                                      'name': name,
+                                      'phone': phone,
+                                      'age': age,
+                                      'place': place,
+                                      'image': image,
+                                      'batch': batch
+                                    },
+                                  ),
+                                ),
+                              );
                                             },
                                             child: const Padding(
                                               padding: EdgeInsets.only(top: 10),

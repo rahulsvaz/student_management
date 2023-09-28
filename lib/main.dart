@@ -8,6 +8,7 @@ import 'package:student_management/Screens/home_screen.dart';
 import 'package:student_management/Screens/location_page.dart';
 import 'package:student_management/Screens/login_screen.dart';
 import 'package:student_management/Screens/sign_up.dart';
+import 'package:student_management/Screens/view_student.dart';
 import 'package:student_management/firebase/firebase_api.dart';
 import 'package:student_management/viewModel/firebase_provider.dart';
 import 'package:student_management/widgets/upload_image.dart';
@@ -42,10 +43,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: Colors.amber.shade200,
+        
+        scaffoldBackgroundColor:Colors.white,
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.light,
-          seedColor: const Color.fromARGB(255, 65, 69, 2),
+          seedColor: Color.fromARGB(255, 0, 0, 0),
         ),
       ),
       title: 'Student Management App',
@@ -57,7 +59,7 @@ class MyApp extends StatelessWidget {
         'home': (context) => const HomeScreen(),
         'signUp': (context) => const SignUp(),
         'forgot': (context) => const ForgetPassword(),
-        'location': (context) => const LocationScreen()
+        'location': (context) => const LocationScreen(),
       },
     );
   }
