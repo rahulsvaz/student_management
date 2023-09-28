@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:student_management/Screens/edit_student.dart';
-import 'package:student_management/widgets/size.dart';
+import 'package:student_management/widgets/custom_font_text.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -50,14 +50,11 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.logout),
           )
         ],
-        title: const Text(
-          'Students Hub',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 36,
-            fontWeight: FontWeight.w900,
-            fontFamily: 'Caveat',
-          ),
+        title: const FontText(
+          text: 'Students Hub',
+          fontSize: 36,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
         ),
         iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.transparent,
@@ -99,16 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
             }
             if (snapshot.data!.docs.isEmpty) {
               return const Center(
-                child: Text(
-                  'No Data Found',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 36,
-                    fontWeight: FontWeight.w900,
-                    fontFamily: 'Caveat',
-                  ),
-                ),
-              );
+                  child: FontText(text: 'No Data Found', fontSize: 30));
             }
             if (snapshot.hasData) {
               return ListView.builder(
@@ -186,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           borderRadius: BorderRadius.circular(30),
                         ),
                         child: SizedBox(
-                          height: 200,
+                          height: 150,
                           width: 350,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -196,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                      top: 40,
+                                      top: 25,
                                       left: 30,
                                     ),
                                     child: SizedBox(
@@ -212,19 +200,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                               backgroundImage:
                                                   NetworkImage(image),
                                             ),
-                                    ),
-                                  ),
-                                  const Height20(),
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                      left: 30,
-                                    ),
-                                    child: Text(
-                                      name,
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
                                     ),
                                   ),
                                 ],
@@ -243,19 +218,35 @@ class _HomeScreenState extends State<HomeScreen> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            'Batch : $batch',
+                                            name.toString().toUpperCase(),
                                             style: const TextStyle(
-                                              fontSize: 18,
+                                              fontSize: 20,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          const Height20(),
-                                          Text(
-                                            'Phone: $phone',
-                                            style: const TextStyle(
-                                              fontSize: 18,
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8, top: 10, bottom: 0),
+                                            child: Text(
+                                              'Batch : ${batch.toString().toUpperCase()}',
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
                                           ),
+                                          GestureDetector(
+                                            onTap: () {
+                                           
+                                            },
+                                            child: const Padding(
+                                              padding: EdgeInsets.only(top: 10),
+                                              child: Icon(
+                                                Icons.arrow_forward,
+                                                size: 26,
+                                              ),
+                                            ),
+                                          )
                                         ],
                                       ),
                                     ),
