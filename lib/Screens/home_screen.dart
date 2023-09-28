@@ -34,6 +34,7 @@ class HomeScreenState extends State<HomeScreen> {
     final firebase = Provider.of<FireBaseProvider>(context);
     return Scaffold(
       appBar: AppBar(
+        
         centerTitle: true,
         actions: [
           IconButton(
@@ -109,7 +110,7 @@ class HomeScreenState extends State<HomeScreen> {
                   final phone = studentData['phone'].toString().toUpperCase();
                   final image = studentData['image'];
                   final docId = snapshot.data!.docs[index].id;
-                 
+        
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Slidable(

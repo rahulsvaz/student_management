@@ -79,6 +79,7 @@ flutter:
   assets:
     - assets/animation/student.json
     - assets/images/avatar.avif
+    - assets/images/macbook.jpg
     - assets/animation/login.json
   #   - images/a_dot_ham.jpeg
 
