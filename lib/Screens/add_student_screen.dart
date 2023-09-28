@@ -8,7 +8,7 @@ import 'package:student_management/widgets/custom_font_text.dart';
 import 'package:student_management/widgets/size.dart';
 import 'package:student_management/widgets/button.dart';
 import 'package:student_management/widgets/input_decoration.dart';
-import 'package:student_management/widgets/upload_image.dart';
+import 'package:student_management/viewModel/upload_image.dart';
 
 class AddStudent extends StatelessWidget {
   const AddStudent({super.key});
@@ -17,7 +17,7 @@ class AddStudent extends StatelessWidget {
   Widget build(
     BuildContext context,
   ) {
-    final imageProvider = Provider.of<ImageProvide>(context,listen: false);
+    final imageProvider = Provider.of<ImageProvide>(context, listen: false);
     final firebase = Provider.of<FireBaseProvider>(context);
     final formKey = GlobalKey<FormState>();
     TextEditingController nameController = TextEditingController();
@@ -47,14 +47,18 @@ class AddStudent extends StatelessWidget {
                     width: 150,
                     child: GestureDetector(onTap: () async {
                       imageUrl = await imageProvider.uploadImage();
-                    }, child: Consumer<ImageProvide>(builder: (context, value, child) {
+                    }, child: Consumer<ImageProvide>(
+                        builder: (context, value, child) {
                       return (imageUrl == '')
-                          ? 
-                         const CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          backgroundImage:AssetImage('assets/images/avatar.avif'),):CircleAvatar(
-                            backgroundColor: Colors.transparent,
-                            backgroundImage:NetworkImage(imageUrl),);
+                          ? const CircleAvatar(
+                              backgroundColor: Colors.transparent,
+                              backgroundImage:
+                                  AssetImage('assets/images/avatar.avif'),
+                            )
+                          : CircleAvatar(
+                              backgroundColor: Colors.transparent,
+                              backgroundImage: NetworkImage(imageUrl),
+                            );
                     })),
                   ),
                 ),
@@ -93,7 +97,9 @@ class AddStudent extends StatelessWidget {
                   controller: phoneController,
                   validator: phoneValidator,
                   decoration: borderDecoration(
-                      'Phone', const Icon(Icons.phone_android)),
+                    'Phone',
+                    const Icon(Icons.phone_android),
+                  ),
                 ),
                 const Height20(),
                 Row(

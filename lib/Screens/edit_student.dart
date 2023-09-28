@@ -1,48 +1,31 @@
-import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:student_management/validators/validators.dart';
-import 'package:student_management/widgets/size.dart';
+import 'package:student_management/viewModel/firebase_provider.dart';
+import 'package:student_management/viewModel/upload_image.dart';
 import 'package:student_management/widgets/button.dart';
+import 'package:student_management/widgets/controller_to_string.dart';
+import 'package:student_management/widgets/custom_font_text.dart';
 import 'package:student_management/widgets/input_decoration.dart';
+import 'package:student_management/widgets/size.dart';
 
 class EditStudent extends StatelessWidget {
   final Map arguments;
   const EditStudent({super.key, required this.arguments});
 
   @override
-  Widget build(
-    BuildContext context,
-  ) {
+  Widget build(BuildContext context) {
+    final imageProvider = Provider.of<ImageProvide>(context, listen: false);
+    final firebase = Provider.of<FireBaseProvider>(context, listen: false);
     final formKey = GlobalKey<FormState>();
-
     TextEditingController nameController = TextEditingController();
     TextEditingController batchController = TextEditingController();
     TextEditingController ageController = TextEditingController();
     TextEditingController placeController = TextEditingController();
     TextEditingController phoneController = TextEditingController();
     User? currentUser = FirebaseAuth.instance.currentUser;
-    final picker = ImagePicker();
-    var imageUrl;
-
-    Future<void> uploadImage() async {
-      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-      if (pickedFile != null) {
-        // Upload the image to Firebase Storage
-        final storageRef = FirebaseStorage.instance
-            .ref()
-            .child('images/${DateTime.now()}.jpg');
-        final uploadTask = storageRef.putFile(File(pickedFile.path));
-        await uploadTask.whenComplete(() async {
-          // Get the download URL of the uploaded image
-          imageUrl = await storageRef.getDownloadURL();
-        });
-      }
-    }
-
+    String imageUrl = '';
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -53,25 +36,31 @@ class EditStudent extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(
-                  height: 40,
-                ),
-                Text(
-                  arguments['name'].toString(),
-                  style: const TextStyle(fontSize: 30, fontFamily: 'Caveat'),
-                ),
+                const Height40(),
+                const FontText(text: 'Enter Student Details ', fontSize: 30),
                 SizedBox(
-                  height: 250,
-                  child: GestureDetector(
-                    onTap: () async {
-                      await uploadImage();
-                    },
-                    child: SizedBox(
-                        height: 150,
-                        width: 150,
-                        child: CircleAvatar(
-                          backgroundImage: NetworkImage(arguments['image']),
-                        )),
+                  height: 200,
+                  child: SizedBox(
+                    height: 150,
+                    width: 150,
+                    child: GestureDetector(
+                      onTap: () async {
+                        imageUrl = await imageProvider.uploadImage();
+                      },
+                      child: Consumer<ImageProvide>(
+                          builder: (context, value, child) {
+                        return (imageUrl == '')
+                            ? const CircleAvatar(
+                                backgroundColor: Colors.transparent,
+                                backgroundImage:
+                                    AssetImage('assets/images/avatar.avif'),
+                              )
+                            : CircleAvatar(
+                                backgroundColor: Colors.transparent,
+                                backgroundImage: NetworkImage(imageUrl),
+                              );
+                      }),
+                    ),
                   ),
                 ),
                 TextFormField(
@@ -115,37 +104,27 @@ class EditStudent extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    GestureDetector(
-                      onTap: () async {
-                        if (formKey.currentState!.validate()) {
-                          String name = nameController.text.trim();
-                          String batch = batchController.text.trim();
-                          String age = ageController.text.trim();
-                          String place = placeController.text.trim();
-                          String userId = currentUser!.uid;
-                          String phone = phoneController.text.trim();
-                          String image = imageUrl;
+                    Card(
+                      elevation: 20,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (formKey.currentState!.validate()) {
+                            String name = controllerToString(nameController);
+                            String batch = controllerToString(batchController);
+                            String age = controllerToString(ageController);
+                            String place = controllerToString(placeController);
+                            String phone = controllerToString(phoneController);
+                            String userId = currentUser!.uid;
+                            String image = imageUrl;
+                            String docId = arguments['docID'];
 
-                          await FirebaseFirestore.instance
-                              .collection('Students')
-                              .doc(arguments['docId'])
-                              .update({
-                            'name': name,
-                            'batch': batch,
-                            'age': age,
-                            'place': place,
-                            'userId': userId,
-                            'phone': phone,
-                            'image':image
-                          }).then((value) => Navigator.pop(context));
-                          
-                        }
-                      },
-                      child: Card(
-                        elevation: 20,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
+                            await firebase.updateStudent(name, batch, age,
+                                place, userId, phone, image, docId);
+                          }
+                        },
                         child: const ButtonOne(label: 'Update'),
                       ),
                     ),

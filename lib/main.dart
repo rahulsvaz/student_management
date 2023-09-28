@@ -10,7 +10,7 @@ import 'package:student_management/Screens/login_screen.dart';
 import 'package:student_management/Screens/sign_up.dart';
 import 'package:student_management/firebase/firebase_api.dart';
 import 'package:student_management/viewModel/firebase_provider.dart';
-import 'package:student_management/widgets/upload_image.dart';
+import 'package:student_management/viewModel/upload_image.dart';
 import 'firebase/firebase_options.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -25,7 +25,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => FireBaseProvider()),
-        ChangeNotifierProvider(create: (context) => ImageProvide())
+        ChangeNotifierProvider(create: (context) => ImageProvide()),
       ],
       child: const MyApp(),
     ),
@@ -42,8 +42,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        
-        scaffoldBackgroundColor:Colors.white,
+        scaffoldBackgroundColor: Colors.white,
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.light,
           seedColor: const Color.fromARGB(255, 0, 0, 0),

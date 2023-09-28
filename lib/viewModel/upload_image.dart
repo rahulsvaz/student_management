@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 
 class ImageProvide with ChangeNotifier {
   Future<String> uploadImage() async {
-    String imageUrl= '';
+    String imageUrl = '';
     ImagePicker picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
@@ -19,7 +19,7 @@ class ImageProvide with ChangeNotifier {
         notifyListeners();
       });
     }
-    
+
     return imageUrl;
   }
 }

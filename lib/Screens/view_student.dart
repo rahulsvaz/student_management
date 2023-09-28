@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:student_management/widgets/size.dart';
 
@@ -11,7 +9,7 @@ class ViewStudent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String image = arguments['image'];
-    var textStyle = TextStyle(
+    var textStyle = const TextStyle(
       fontSize: 30,
     );
     return Scaffold(
@@ -19,7 +17,7 @@ class ViewStudent extends StatelessWidget {
         child: Card(
           color: Colors.deepPurple.shade100,
           elevation: 10,
-         // color: Colors.deepPurple.shade100,
+          // color: Colors.deepPurple.shade100,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
           child: SizedBox(
@@ -32,12 +30,17 @@ class ViewStudent extends StatelessWidget {
                 SizedBox(
                   height: 200,
                   width: 200,
-                  child: CircleAvatar(
-                    
-                      backgroundColor: Colors.transparent,
-                      backgroundImage: NetworkImage(image)),
+                  child: (image == "")
+                      ? const CircleAvatar(
+                          backgroundImage: AssetImage(
+                            "assets/images/avatar.avif",
+                          ),
+                        )
+                      : CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          backgroundImage: NetworkImage(image)),
                 ),
-                Height40(),
+                const Height40(),
                 Padding(
                   padding: const EdgeInsets.all(30.0),
                   child: Column(
@@ -46,33 +49,33 @@ class ViewStudent extends StatelessWidget {
                         'Name : ${arguments['name']}',
                         style: textStyle,
                       ),
-                      Height20(),
+                      const Height20(),
                       Text(
                         'Age : ${arguments['age']}',
                         style: textStyle,
                       ),
-                      Height20(),
+                      const Height20(),
                       Text(
                         'Batch : ${arguments['batch']}',
                         style: textStyle,
                       ),
-                      Height20(),
+                      const Height20(),
                       Text(
                         'Place : ${arguments['place']}',
                         style: textStyle,
                       ),
-                      Height20(),
+                      const Height20(),
                       Text(
                         'Phone : ${arguments['phone']}',
                         style: textStyle,
                       ),
-                      Height20(),
+                      const Height20(),
                       Center(
                         child: IconButton(
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          icon: Icon(Icons.arrow_back_ios_new),
+                          icon: const Icon(Icons.arrow_back_ios_new),
                         ),
                       )
                     ],

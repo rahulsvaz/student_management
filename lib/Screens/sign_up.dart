@@ -16,7 +16,6 @@ class SignUp extends StatelessWidget {
     TextEditingController passwordController = TextEditingController();
     TextEditingController nameController = TextEditingController();
     TextEditingController phoneController = TextEditingController();
-
     final formKey = GlobalKey<FormState>();
     return Scaffold(
       body: Center(
@@ -42,7 +41,7 @@ class SignUp extends StatelessWidget {
                           //name
                           TextFormField(
                               controller: nameController,
-                              validator:nameValidator,
+                              validator: nameValidator,
                               decoration: borderDecoration(
                                   'Name', const Icon(Icons.abc))),
                           const Height20(),
@@ -62,10 +61,14 @@ class SignUp extends StatelessWidget {
                           const Height20(),
                           // password
                           TextFormField(
-                              controller: passwordController,
-                              validator: passwordValidator,
-                              decoration: borderDecoration(
-                                  'Password', const Icon(Icons.password))),
+                            controller: passwordController,
+                            validator: passwordValidator,
+                            obscureText: true,
+                            decoration: borderDecoration(
+                              'Password',
+                              const Icon(Icons.password),
+                            ),
+                          ),
                           const Height20(),
                           GestureDetector(
                               onTap: () async {
@@ -99,5 +102,4 @@ class SignUp extends StatelessWidget {
       ),
     );
   }
-
 }

@@ -3,20 +3,22 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:student_management/Screens/edit_student.dart';
 import 'package:student_management/Screens/view_student.dart';
+import 'package:student_management/viewModel/firebase_provider.dart';
 import 'package:student_management/widgets/custom_font_text.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  HomeScreenState createState() => HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class HomeScreenState extends State<HomeScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   User? currentUser;
@@ -27,13 +29,9 @@ class _HomeScreenState extends State<HomeScreen> {
     currentUser = _auth.currentUser;
   }
 
-  Future<void> _signOut() async {
-    await _auth.signOut();
-    Navigator.pushReplacementNamed(context, 'login');
-  }
-
   @override
   Widget build(BuildContext context) {
+    final firebase = Provider.of<FireBaseProvider>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -45,7 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.add),
           ),
           IconButton(
-            onPressed: _signOut,
+            onPressed: () async {
+              await firebase.signOut();
+            },
             icon: const Icon(Icons.logout),
           )
         ],
@@ -108,8 +108,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   final batch = studentData['batch'].toString().toUpperCase();
                   final phone = studentData['phone'].toString().toUpperCase();
                   final image = studentData['image'];
-                  final docId = studentData.id;
-
+                  final docId = snapshot.data!.docs[index].id;
+                 
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Slidable(
@@ -118,12 +118,26 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           SlidableAction(
                             onPressed: (c) async {
-                              await _firestore
-                                  .collection('Students')
-                                  .doc(docId)
-                                  .delete()
-                                  .then((value) => Fluttertoast.showToast(
-                                      msg: 'Student data deleted'));
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text(
+                                          'Are You Sure To Delete Details About \n\n$name'),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () {
+                                              firebase.deleteStudent(docId);
+                                            },
+                                            child: const Text('Yes')),
+                                        TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text('No')),
+                                      ],
+                                    );
+                                  });
                             },
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(30)),
@@ -150,7 +164,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       'age': age,
                                       'place': place,
                                       'image': image,
-                                      'batch': batch
+                                      'batch': batch,
+                                      'docID': docId.toString()
                                     },
                                   ),
                                 ),
@@ -167,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       key: const ValueKey(0),
                       child: Card(
-                        color:Colors.deepPurple.shade100,
+                        color: Colors.deepPurple.shade100,
                         elevation: 5,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
@@ -189,10 +204,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: SizedBox(
                                       height: 100,
                                       width: 100,
-                                      child: (image == null)
+                                      child: (image == null || image == "")
                                           ? const CircleAvatar(
                                               backgroundImage: AssetImage(
-                                                "assets/images/avatar.avif ",
+                                                "assets/images/avatar.avif",
                                               ),
                                             )
                                           : CircleAvatar(
@@ -237,20 +252,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                           GestureDetector(
                                             onTap: () {
                                               Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ViewStudent(
-                                    arguments: {
-                                      'name': name,
-                                      'phone': phone,
-                                      'age': age,
-                                      'place': place,
-                                      'image': image,
-                                      'batch': batch
-                                    },
-                                  ),
-                                ),
-                              );
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ViewStudent(
+                                                    arguments: {
+                                                      'name': name,
+                                                      'phone': phone,
+                                                      'age': age,
+                                                      'place': place,
+                                                      'image': image,
+                                                      'batch': batch
+                                                    },
+                                                  ),
+                                                ),
+                                              );
                                             },
                                             child: const Padding(
                                               padding: EdgeInsets.only(top: 10),

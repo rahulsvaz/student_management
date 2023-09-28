@@ -80,4 +80,44 @@ class FireBaseProvider with ChangeNotifier {
         .then((value) => Fluttertoast.showToast(msg: 'Data added for $name'))
         .then((value) => navigatorKey.currentState!.pop());
   }
+
+  Future<void> updateStudent(
+      String name,
+      String batch,
+      String age,
+      String place,
+      String userId,
+      String phone,
+      String image,
+      String docId) async {
+    await FirebaseFirestore.instance
+        .collection('Students')
+        .doc(docId)
+        .update({
+          'name': name,
+          'batch': batch,
+          'age': age,
+          'place': place,
+          'userId': userId,
+          'phone': phone,
+          'image': image
+        })
+        .then((value) => navigatorKey.currentState!.pop())
+        .then((value) =>
+            Fluttertoast.showToast(msg: 'Updated Details For $name'));
+  }
+
+  Future<void> deleteStudent(String docId) async {
+    await FirebaseFirestore.instance
+        .collection('Students')
+        .doc(docId)
+        .delete()
+        .then((value) => Fluttertoast.showToast(msg: 'Student data deleted'))
+        .then((value) => navigatorKey.currentState!.pop());
+  }
+
+  Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
+    navigatorKey.currentState!.pushReplacementNamed('login');
+  }
 }
