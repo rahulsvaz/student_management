@@ -34,6 +34,8 @@ class HomeScreenState extends State<HomeScreen> {
     final firebase = Provider.of<FireBaseProvider>(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor:Colors.transparent,
+
         
         centerTitle: true,
         actions: [
@@ -57,11 +59,12 @@ class HomeScreenState extends State<HomeScreen> {
           color: Colors.black,
         ),
         iconTheme: const IconThemeData(color: Colors.black),
-        backgroundColor: Colors.transparent,
+     
         elevation: 0,
       ),
       drawer: Drawer(
-        backgroundColor: Colors.amber.shade200,
+        elevation: 0,
+        backgroundColor: const Color.fromARGB(0, 255, 255, 255),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -183,7 +186,7 @@ class HomeScreenState extends State<HomeScreen> {
                       ),
                       key: const ValueKey(0),
                       child: Card(
-                        color: Colors.deepPurple.shade100,
+                        color: Color.fromARGB(110, 72, 32, 145),
                         elevation: 5,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
