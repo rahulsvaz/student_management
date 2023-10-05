@@ -186,7 +186,7 @@ class HomeScreenState extends State<HomeScreen> {
                       ),
                       key: const ValueKey(0),
                       child: Card(
-                        color: Color.fromARGB(110, 72, 32, 145),
+                        color: const Color.fromARGB(110, 72, 32, 145),
                         elevation: 5,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),

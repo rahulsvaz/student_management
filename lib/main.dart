@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:student_management/Screens/add_student_screen.dart';
@@ -39,11 +40,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
 
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-      
-        //scaffoldBackgroundColor:Colors.deepPurple.shade200,
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.light,
           seedColor: const Color.fromARGB(255, 0, 0, 0),

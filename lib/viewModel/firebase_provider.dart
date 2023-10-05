@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/route_manager.dart';
 import 'package:student_management/main.dart';
 
 class FireBaseProvider with ChangeNotifier {
@@ -77,7 +78,7 @@ class FireBaseProvider with ChangeNotifier {
           'phone': phone,
           'image': image
         })
-        .then((value) => Fluttertoast.showToast(msg: 'Data added for $name'))
+        .then((value) => Get.snackbar('Student Details Added', '${name.toUpperCase()}'))
         .then((value) => navigatorKey.currentState!.pop());
   }
 
